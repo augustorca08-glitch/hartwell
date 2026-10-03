@@ -1,0 +1,377 @@
+@import "tailwindcss";
+
+/*
+ * HARTWELL · House style
+ * Tema claro de papel, bloqueado (catálogo impreso). Capítulos de color en navy, forest y oxblood.
+ * Formas: todo rectangular (radio 0). Líneas de 1px. Fotografía enmarcada en passe-partout.
+ * Z-index: header 40 · overlays 50 · drawer/dialogs 60 · grain 70 · veil 90
+ */
+
+@theme {
+  --color-paper: #f6f2ea;
+  --color-ivory: #efe9dd;
+  --color-cream: #e7dece;
+  --color-sand: #d5c6a8;
+  --color-stone: #a99f8d;
+  --color-taupe: #81776a;
+  --color-ink: #1c1d21;
+  --color-ink-soft: #5f574c;
+  --color-navy: #1b2940;
+  --color-navy-deep: #111b2c;
+  --color-forest: #22392c;
+  --color-forest-deep: #172a1f;
+  --color-oxblood: #5a1f25;
+  --color-gold: #7f6435;
+  --color-gold-soft: #cdb88d;
+  --color-brown: #3a2a20;
+  --color-leather: #7a4e2d;
+  --color-line: rgb(28 29 33 / 0.16);
+  --color-line-strong: rgb(28 29 33 / 0.38);
+  --color-line-light: rgb(246 242 234 / 0.24);
+
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Garamond, Georgia, serif;
+  --font-sc: var(--font-cormorant-sc), var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-franklin), "Helvetica Neue", Arial, sans-serif;
+
+  /* Movimiento: lento, sin rebote */
+  --ease-quiet: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-unveil: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --breakpoint-xs: 400px;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --focus: var(--color-navy);
+    --header-h: 72px;
+  }
+
+  html {
+    background: var(--color-paper);
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+    overflow-x: clip;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 15.5px;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1;
+  }
+
+  ::selection {
+    background: var(--color-navy);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 1.5px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  button,
+  [role="button"],
+  a {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+  }
+
+  [data-surface="dark"] {
+    --focus: var(--color-paper);
+  }
+}
+
+@layer components {
+  /* Display: Cormorant Garamond. La itálica es la voz de énfasis de la marca. */
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    line-height: 1.04;
+    letter-spacing: -0.012em;
+  }
+  .display em,
+  .display i {
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+
+  /* Versalitas editoriales: referencias de pieza, capítulos, metadatos */
+  .smallcaps {
+    font-family: var(--font-sc);
+    font-weight: 500;
+    letter-spacing: 0.09em;
+  }
+
+  /* Rótulo de interfaz: Franklin en mayúsculas espaciadas (usar con moderación) */
+  .label {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .numeral {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Botones rectangulares: el fondo sube desde la base al pasar el cursor */
+  .btn {
+    --btn-bg: var(--color-navy);
+    --btn-fg: var(--color-paper);
+    --btn-hover-bg: var(--color-forest);
+    --btn-hover-fg: var(--color-paper);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    min-height: 50px;
+    padding: 0 1.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--btn-fg);
+    background-color: var(--btn-bg);
+    background-image: linear-gradient(var(--btn-hover-bg), var(--btn-hover-bg));
+    background-repeat: no-repeat;
+    background-position: 50% 100%;
+    background-size: 100% 0%;
+    box-shadow: inset 0 0 0 1px var(--btn-border, transparent);
+    transition:
+      background-size 0.6s var(--ease-quiet),
+      color 0.45s var(--ease-quiet),
+      box-shadow 0.45s var(--ease-quiet);
+  }
+  @media (hover: hover) {
+    .btn:hover {
+      background-size: 100% 100%;
+      color: var(--btn-hover-fg);
+    }
+  }
+  .btn:active {
+    transform: translateY(1px);
+  }
+  .btn-navy {
+    /* valores por defecto */
+  }
+  .btn-line {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-ink);
+    --btn-border: var(--color-ink);
+    --btn-hover-bg: var(--color-ink);
+    --btn-hover-fg: var(--color-paper);
+  }
+  .btn-paper {
+    --btn-bg: var(--color-paper);
+    --btn-fg: var(--color-ink);
+    --btn-hover-bg: var(--color-cream);
+    --btn-hover-fg: var(--color-ink);
+  }
+  .btn-line-light {
+    --btn-bg: rgb(17 27 44 / 0.18);
+    --btn-fg: var(--color-paper);
+    --btn-border: rgb(246 242 234 / 0.85);
+    --btn-hover-bg: var(--color-paper);
+    --btn-hover-fg: var(--color-ink);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .btn-oxblood {
+    --btn-bg: var(--color-oxblood);
+    --btn-hover-bg: var(--color-navy);
+  }
+  .btn[disabled],
+  .btn[aria-disabled="true"] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Subrayado de 1px que se dibuja de izquierda a derecha */
+  .link-line {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.7s var(--ease-quiet);
+  }
+  .link-line:hover,
+  .link-line:focus-visible,
+  .link-line[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+  /* Variante: subrayado siempre presente que se recorre al pasar */
+  .link-rule {
+    background-image: linear-gradient(currentColor, currentColor), linear-gradient(var(--color-line-strong), var(--color-line-strong));
+    background-size:
+      0% 1px,
+      100% 1px;
+    background-position:
+      0 100%,
+      0 100%;
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-block: 4px 4px;
+    transition: background-size 0.7s var(--ease-quiet);
+  }
+  .link-rule:hover,
+  .link-rule:focus-visible {
+    background-size:
+      100% 1px,
+      100% 1px;
+  }
+
+  /* Passe-partout: la fotografía se presenta como una lámina enmarcada */
+  .frame {
+    background: var(--color-ivory);
+    padding: clamp(8px, 1.2vw, 18px);
+    box-shadow:
+      inset 0 0 0 1px var(--color-line),
+      0 1px 0 rgb(28 29 33 / 0.04);
+  }
+  .frame-dark {
+    background: rgb(246 242 234 / 0.06);
+    box-shadow: inset 0 0 0 1px var(--color-line-light);
+  }
+
+  /* Ornamento: dos filetes con un rombo dorado en el centro */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    color: var(--color-gold);
+  }
+  .ornament::before,
+  .ornament::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .ornament > i {
+    width: 6px;
+    height: 6px;
+    transform: rotate(45deg);
+    background: currentColor;
+  }
+
+  /* Ficha de sastre: bordes troquelados como una etiqueta de taller */
+  .ticket {
+    position: relative;
+    background: var(--color-ivory);
+    -webkit-mask:
+      radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  }
+
+  /* Etiqueta de equipaje (colección y temporada) */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1rem 0.45rem 1.6rem;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 12px 100%, 0 50%);
+    position: relative;
+  }
+  .tag::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    margin-top: -3px;
+    border-radius: 9999px;
+    background: var(--color-paper);
+    box-shadow: inset 0 0 0 1px var(--color-line-strong);
+  }
+
+  .surface-linen {
+    background-color: var(--color-cream);
+    background-image: url("/assets/hartwell/textures/linen.jpg");
+    background-size: 480px;
+    background-blend-mode: multiply;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Grano de papel: fijo y sin eventos, nunca dentro de contenedores que scrollean */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+  background-image: url("/assets/hartwell/textures/paper-grain.png");
+  background-size: 256px;
+}
+
+/* Con la barra de compra fija (mobile) visible, el final del footer no queda tapado */
+@media (max-width: 1023px) {
+  body:has([data-sticky-buy]) footer {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
